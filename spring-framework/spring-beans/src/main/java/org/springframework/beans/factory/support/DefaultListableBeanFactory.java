@@ -294,6 +294,16 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return getBean(requiredType, (Object[]) null);
 	}
 
+	/**
+	 * 获取bean
+	 * @param requiredType type the bean must match; can be an interface or superclass.
+	 * {@code null} is disallowed.
+	 * @param args arguments to use when creating a bean instance using explicit arguments
+	 * (only applied when creating a new instance as opposed to retrieving an existing one)
+	 * @param <T>
+	 * @return
+	 * @throws BeansException
+	 */
 	@Override
 	public <T> T getBean(Class<T> requiredType, @Nullable Object... args) throws BeansException {
 		NamedBeanHolder<T> namedBean = resolveNamedBean(requiredType, args);
@@ -362,6 +372,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return resolvedBeanNames;
 	}
 
+	/**
+	 * 根据type获取beanname
+	 * @param type
+	 * @param includeNonSingletons
+	 * @param allowEagerInit
+	 * @return
+	 */
 	private String[] doGetBeanNamesForType(ResolvableType type, boolean includeNonSingletons, boolean allowEagerInit) {
 		List<String> result = new ArrayList<>();
 

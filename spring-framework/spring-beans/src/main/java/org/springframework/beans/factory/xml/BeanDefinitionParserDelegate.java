@@ -981,7 +981,7 @@ public class BeanDefinitionParserDelegate {
 		else if (nodeNameEquals(ele, VALUE_ELEMENT)) {//value 标签
 			return parseValueElement(ele, defaultValueType);
 		}
-		else if (nodeNameEquals(ele, NULL_ELEMENT)) {
+		else if (nodeNameEquals(ele, NULL_ELEMENT)) {//
 			// It's a distinguished null value. Let's wrap it in a TypedStringValue
 			// object in order to preserve the source location.
 			TypedStringValue nullHolder = new TypedStringValue(null);
@@ -991,16 +991,16 @@ public class BeanDefinitionParserDelegate {
 		else if (nodeNameEquals(ele, ARRAY_ELEMENT)) {// ARRAY
 			return parseArrayElement(ele, bd);
 		}
-		else if (nodeNameEquals(ele, LIST_ELEMENT)) {
+		else if (nodeNameEquals(ele, LIST_ELEMENT)) {//list
 			return parseListElement(ele, bd);
 		}
-		else if (nodeNameEquals(ele, SET_ELEMENT)) {
+		else if (nodeNameEquals(ele, SET_ELEMENT)) {//set
 			return parseSetElement(ele, bd);
 		}
-		else if (nodeNameEquals(ele, MAP_ELEMENT)) {
+		else if (nodeNameEquals(ele, MAP_ELEMENT)) {//map 返回ManagedMap
 			return parseMapElement(ele, bd);
 		}
-		else if (nodeNameEquals(ele, PROPS_ELEMENT)) {
+		else if (nodeNameEquals(ele, PROPS_ELEMENT)) {//props标签
 			return parsePropsElement(ele);
 		}
 		else {
@@ -1116,6 +1116,13 @@ public class BeanDefinitionParserDelegate {
 		return target;
 	}
 
+	/**
+	 * 解析集合元素
+	 * @param elementNodes
+	 * @param target
+	 * @param bd
+	 * @param defaultElementType
+	 */
 	protected void parseCollectionElements(
 			NodeList elementNodes, Collection<Object> target, @Nullable BeanDefinition bd, String defaultElementType) {
 
@@ -1129,12 +1136,13 @@ public class BeanDefinitionParserDelegate {
 
 	/**
 	 * Parse a map element.
+	 * 解析map
 	 */
 	public Map<Object, Object> parseMapElement(Element mapEle, @Nullable BeanDefinition bd) {
-		String defaultKeyType = mapEle.getAttribute(KEY_TYPE_ATTRIBUTE);
-		String defaultValueType = mapEle.getAttribute(VALUE_TYPE_ATTRIBUTE);
+		String defaultKeyType = mapEle.getAttribute(KEY_TYPE_ATTRIBUTE); //key_type
+		String defaultValueType = mapEle.getAttribute(VALUE_TYPE_ATTRIBUTE);//value_type
 
-		List<Element> entryEles = DomUtils.getChildElementsByTagName(mapEle, ENTRY_ELEMENT);
+		List<Element> entryEles = DomUtils.getChildElementsByTagName(mapEle, ENTRY_ELEMENT);// entry
 		ManagedMap<Object, Object> map = new ManagedMap<>(entryEles.size());
 		map.setSource(extractSource(mapEle));
 		map.setKeyTypeName(defaultKeyType);

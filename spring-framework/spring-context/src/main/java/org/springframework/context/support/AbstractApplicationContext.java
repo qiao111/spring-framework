@@ -314,15 +314,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Create and return a new {@link StandardEnvironment}.
-	 * <p>Subclasses may override this method in order to supply
-	 * a custom {@link ConfigurableEnvironment} implementation.
-	 */
-	protected ConfigurableEnvironment createEnvironment() {
-		return new StandardEnvironment();
-	}
-
-	/**
 	 * Return this context's internal bean factory as AutowireCapableBeanFactory,
 	 * if already available.
 	 * @see #getBeanFactory()
@@ -330,6 +321,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public AutowireCapableBeanFactory getAutowireCapableBeanFactory() throws IllegalStateException {
 		return getBeanFactory();
+	}
+
+	/**
+	 * Create and return a new {@link StandardEnvironment}.
+	 * <p>Subclasses may override this method in order to supply
+	 * a custom {@link ConfigurableEnvironment} implementation.
+	 */
+	protected ConfigurableEnvironment createEnvironment() {
+		return new StandardEnvironment();
 	}
 
 	/**
@@ -511,6 +511,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.applicationListeners;
 	}
 
+	/**
+	 * bean解析入口
+	 * @throws BeansException
+	 * @throws IllegalStateException
+	 */
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
@@ -518,9 +523,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			//xml的解析在此处 使用了DefaultListableBeanFactory和XmlBeanDefinitionReader
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			//功能填充
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -634,6 +641,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Tell the internal bean factory to use the context's class loader etc.
 		beanFactory.setBeanClassLoader(getClassLoader());
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
+		//属性注册器
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
@@ -656,6 +664,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
+		//增加对AspectJ的支持
 		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.
@@ -865,6 +874,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		//初始化单例
 		beanFactory.preInstantiateSingletons();
 	}
 
