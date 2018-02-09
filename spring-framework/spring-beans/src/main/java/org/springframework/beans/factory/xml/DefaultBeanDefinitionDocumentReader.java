@@ -88,7 +88,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * (or DTD, historically).
 	 * <p>Opens a DOM Document; then initializes the default settings
 	 * specified at the {@code <beans/>} level; then parses the contained bean definitions.
-	 *根据spring-beans的xsd或者以前的DTD来解析bean定义
+	 *根据spring-beans的xsd或者以前的DTD来解析bean定义 注册bean
 	 */
 	@Override
 	public void registerBeanDefinitions(Document doc, XmlReaderContext readerContext) {

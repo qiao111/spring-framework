@@ -438,6 +438,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object result = existingBean;
 		for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
+			//AOP在此织入代理
 			Object current = beanProcessor.postProcessAfterInitialization(result, beanName);
 			if (current == null) {
 				return result;
@@ -588,7 +589,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			//填充bean属性 可能存在bean依赖
 			populateBean(beanName, mbd, instanceWrapper);
-			//初始化bean 例如init-method
+			//初始化bean 例如init-method  AOP也在此处织入
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -1049,8 +1050,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					}
 				}
 			}
-			mbd.beforeInstantiationResolved = (bean != null);
 		}
+		mbd.beforeInstantiationResolved = (bean != null);
 		return bean;
 	}
 
@@ -1715,6 +1716,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+			// 如果是InitializingBean则先调用afterPropertiesSet方法,在调用initMethod方法(如果有的话)
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {

@@ -76,7 +76,7 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 	 */
 	public XmlBeanFactory(Resource resource, BeanFactory parentBeanFactory) throws BeansException {
 		super(parentBeanFactory);// 调用AbstractAutowireCapableBeanFactory的构造方法
-		this.reader.loadBeanDefinitions(resource);
+		this.reader.loadBeanDefinitions(resource);//XmlBeanDefinitionReader
 	}
 
 }

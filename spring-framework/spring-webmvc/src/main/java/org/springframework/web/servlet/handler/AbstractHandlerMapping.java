@@ -350,10 +350,10 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	public final HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
 		Object handler = getHandlerInternal(request);
 		if (handler == null) {
-			handler = getDefaultHandler();
+			return null;
 		}
 		if (handler == null) {
-			return null;
+			handler = getDefaultHandler();
 		}
 		// Bean name or resolved handler?
 		if (handler instanceof String) {

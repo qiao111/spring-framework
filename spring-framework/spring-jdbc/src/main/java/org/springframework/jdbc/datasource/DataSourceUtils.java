@@ -225,7 +225,7 @@ public abstract class DataSourceUtils {
 							con + "] to " + previousIsolationLevel);
 				}
 				con.setTransactionIsolation(previousIsolationLevel);
-			}
+		}
 
 			// Reset read-only flag.
 			if (con.isReadOnly()) {
